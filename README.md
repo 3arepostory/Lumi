@@ -26,6 +26,10 @@ Um lugar tranquilo para conversar. Cliente web React/TypeScript em português br
 
 **Estado do cliente Matrix anterior: piloto funcional de cliente, com backend próprio ainda não provisionado e fluxo real entre duas contas ainda não validado. Não é uma entrega de todas as seis fases, nem produto auditado.** A prévia começa em modo identificado com pessoas fictícias e mensagens locais. Para mensagens reais é necessário conectar contas de um servidor Matrix.
 
+## Validação desta atualização
+
+Veja [o relatório de personalização, mensagens, imagens e voz](docs/UPDATE-VALIDATION.md) e [as instruções de uso e TURN](docs/REALTIME-SETUP.md). O modo principal por link é a entrega atual; os detalhes Matrix abaixo descrevem a opção anterior.
+
 ## Executar
 
 Node.js 24 e pnpm 11.25.0:

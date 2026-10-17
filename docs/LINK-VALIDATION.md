@@ -1,5 +1,7 @@
 # Conversa por link no Vercel — validação
 
+**Atualização mais recente:** [personalização, tempo real, imagens e voz](UPDATE-VALIDATION.md). O registro abaixo documenta a primeira versão de texto.
+
 Estado de implementação: cliente MLS + API Vercel + Blob privado integrado. Armazenamento criado em São Paulo e conectado ao projeto; segredos não foram versionados.
 
 Executado localmente:

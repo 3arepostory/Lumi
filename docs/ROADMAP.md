@@ -1,5 +1,7 @@
 # Entrega por fases
 
+**Modo principal atual:** conversa por link no Vercel com personalização, fila de mensagens, confirmações, digitação, imagens cifradas e voz WebRTC. Veja [validação da atualização](UPDATE-VALIDATION.md). TURN ainda deve ser configurado para redes restritivas. A tabela abaixo registra o roteiro anterior do cliente Matrix.
+
 O objetivo completo continua aberto. Não há alegação de produto pronto para uso sensível ou de atendimento integral ao briefing.
 
 | Fase | Estado | Critério restante |
