@@ -12,6 +12,7 @@ export default function LinkApp(){
  const s=client?.snapshot,peer=s?(s.ownerRole?s.guest:s.owner):undefined;
  const refresh=()=>{void storedRooms().then(setRooms).catch(()=>setError('Armazenamento local indisponível. Use um navegador com IndexedDB.'));};
  useEffect(()=>{refresh();return()=>{active.current?.stop();clearTimeout(draftTimer.current);};},[]);
+ useEffect(()=>{const changed=()=>{const next=getInvite();if(next.error)setError(next.error);if(next.value){setInvite(next.value);setForm(true);}};window.addEventListener('hashchange',changed);return()=>window.removeEventListener('hashchange',changed);},[]);
  useEffect(()=>{document.documentElement.dataset.theme=dark?'dark':'light';localStorage.setItem('lumi-theme',dark?'dark':'light');},[dark]);
  useEffect(()=>{const wake=()=>{if(document.visibilityState==='visible'&&active.current)void active.current.sync().catch(()=>{});};document.addEventListener('visibilitychange',wake);window.addEventListener('online',wake);return()=>{document.removeEventListener('visibilitychange',wake);window.removeEventListener('online',wake);};},[]);
  useEffect(()=>{if(form||showPrivacy||showSafety||showLink||showClose)dialog.current?.showModal();else dialog.current?.close();},[form,showPrivacy,showSafety,showLink,showClose]);
