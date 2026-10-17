@@ -12,11 +12,13 @@
   },
   "dependencies": {
     "@matrix-org/matrix-sdk-crypto-wasm": "18.9.0",
+    "@vercel/blob": "2.8.2",
     "events": "3.3.0",
     "matrix-encrypt-attachment": "1.0.3",
     "matrix-js-sdk": "44.0.0",
     "react": "19.3.1",
-    "react-dom": "19.3.1"
+    "react-dom": "19.3.1",
+    "ts-mls": "1.6.4"
   },
   "devDependencies": {
     "@types/node": "26.6.5",

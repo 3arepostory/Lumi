@@ -1,5 +1,21 @@
 # Arquitetura e modelo de ameaças
 
+## Atualização: modalidade por link inteiramente no Vercel
+
+Este modo substitui a dependência de um homeserver Matrix na página inicial. O modelo abaixo continua aplicável ao cliente Matrix em `/?modo=matrix`.
+
+Na modalidade por link, as funções Vercel autenticam credenciais de 256 bits e gravam hashes em Blob privado. As mensagens usam MLS RFC 9420 através de `ts-mls` 1.6.4, sem reimplementar a criptografia. A biblioteca é MIT e declara não ter auditoria formal. Este modo também não é auditado.
+
+Chaves e estado MLS são criados e cifrados localmente. A implementação usa pacotes padronizados, welcome com ratchet tree e mensagens privadas; credenciais básicas são UUIDs fixados às chaves de assinatura esperadas. O link fixa a chave de quem criou a sala; a entrada do convidado exige aceitação explícita. Os dois comparam um código derivado pelo exporter MLS por um canal confiável. Não se usa o autenticador permissivo de testes da biblioteca. Não existe alegação de identidade civil validada.
+
+Operador de servidor pode negar entrega, observar metadados e controlar o código servido. Não pode obter o conteúdo a partir apenas dos envelopes sem comprometer as chaves, a implementação ou os dispositivos. Ratchets e mensagens locais são persistidos juntos antes/depois de operações; o ciphertext pendente é reutilizado em reenvios. A sequência e IDs são verificados, o protocolo rejeita replay/adulteração, e writes condicionais por ETag resolvem concorrência no servidor. Ainda são necessários testes extensos de falhas durante escritas locais e mudança de versões.
+
+São somente dois participantes, sem troca de dispositivos, remoção seletiva de membro, atualização periódica de época, anexos, backups ou restauração neste modo. Assim, não se anuncia recuperação após comprometimento durante uma conversa longa: MLS oferece mecanismos para isso, mas a integração atual só cria a época de entrada e usa os ratchets de aplicação. Não confundir a escolha do protocolo com garantias ainda não integradas.
+
+O acesso expira em sete dias; o convite em 24h. Encerrar limpa os envelopes do registro ativo e bloqueia acessos. Retenção operacional do provedor e cópias locais permanecem fora dessa garantia. A rota exige origem correta, JSON, bearer token, associação à sala e limites de tamanho. Criação de salas tem limite compartilhado persistente. Logs registram apenas um identificador genérico de erro. O service worker nunca guarda `/api/link` ou blobs de conversas.
+
+Veja o README e o relatório específico `LINK-VALIDATION.md` para o estado desta modalidade.
+
 ## Limite desta entrega
 
 Piloto não auditado. O fluxo com duas contas reais, revogação/rotação e recuperação completa de histórico ainda não foi validado. A implementação do protocolo não foi reescrita. Não usar como prova de segurança para comunicação sensível.

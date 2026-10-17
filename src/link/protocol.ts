@@ -1,0 +1,11 @@
+export type LinkMember={id:string;name:string;keyPackage:string;signatureKey:string};
+export type Envelope={id:string;seq:number;kind:'welcome'|'message'|'commit';sender:string;payload:string;time:number;digest:string};
+export type RoomView={id:string;name:string;owner:LinkMember;guest?:LinkMember;expires:number;ready:boolean;revoked:boolean;events:Envelope[];version:number};
+export type StoredRoom=Omit<RoomView,'events'>&{ownerTokenHash:string;guestTokenHash?:string;inviteHash:string;inviteExpires:number;events:Envelope[];lastSent:Record<string,number>};
+export type WireMessage={id:string;from:string;body:string;time:number};
+export type LocalMessage=WireMessage&{mine:boolean;status:'pending'|'sent'|'received'};
+export type PendingEnvelope={id:string;kind:'welcome'|'message'|'commit';payload:string};
+export type LinkSnapshot={id:string;token:string;self:LinkMember;owner:LinkMember;guest?:LinkMember;ownerRole:boolean;invite?:string;privatePackage:{initPrivateKey:string;hpkePrivateKey:string;signaturePrivateKey:string};state?:string;messages:LocalMessage[];cursor:number;confirmed:boolean;pending?:PendingEnvelope;expires:number;draft:string};
+export const UUID=/^[a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89ab][a-f0-9]{3}-[a-f0-9]{12}$/i;
+export const TOKEN=/^[a-zA-Z0-9_-]{43}$/;
+export const BASE64=/^[a-zA-Z0-9+/]+={0,2}$/;
