@@ -1,6 +1,6 @@
 import {get,put,del,BlobPreconditionFailedError} from '@vercel/blob';
 import {createHash,timingSafeEqual} from 'node:crypto';
-import {UUID,TOKEN,BASE64,type StoredRoom,type LinkMember,type Envelope} from '../src/link/protocol';
+import {UUID,TOKEN,BASE64,type StoredRoom,type LinkMember,type Envelope} from '../src/link/protocol.js';
 export class HttpError extends Error{constructor(readonly status:number,message:string){super(message);}}
 export const digest=(value:string)=>createHash('sha256').update(value).digest('hex');
 const root=`lumi-link-v1/${process.env.VERCEL_ENV==='production'?'production':'preview'}/`;
