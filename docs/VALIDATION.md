@@ -1,6 +1,6 @@
 # Relatório de validação
 
-Data da execução: 16 de outubro de 2026, fuso do usuário America/Sao_Paulo.
+Data da execução: 16–17 de outubro de 2026, fuso do usuário America/Sao_Paulo.
 
 História: pessoa conecta conta Matrix → SDK inicializa chaves locais → aceita convite para sala E2EE → envia ciphertext ao Synapse → outra conta sincroniza e descriptografa localmente. A validação dessa história completa está **pendente na fronteira com o servidor próprio**, ainda não provisionado.
 
@@ -18,6 +18,10 @@ História: pessoa conecta conta Matrix → SDK inicializa chaves locais → acei
 | Modo escuro | Alternância e captura verificadas |
 | Guarda de HTTPS no login | Endereço remoto HTTP rejeitado antes de autenticação |
 | Erros de execução do navegador no fluxo testado | Lista vazia |
+| GitHub Actions em Linux | Passou no commit `5ae29813fcec006e389fb172a5e1da602d95682a` |
+| Preview Vercel | READY; resposta autenticada HTTP 200 e CSP conferida |
+
+A primeira compilação Linux revelou resolução indevida de dependências com a opção de symlinks específica de Windows. A configuração foi restringida ao Windows e o polyfill `events` foi declarado explicitamente. A compilação e a CI subsequentes passaram. O feedback/toolbar de preview do Vercel foi desabilitado no projeto para evitar injeção de script externo; a CSP continua restrita a scripts próprios.
 
 Testes de criptografia: anexo foi cifrado e decifrado com a biblioteca oficial; adulteração do ciphertext rejeitada; arquivo padrão de exportação de chaves criado/decifrado pelo módulo Rust e senha errada rejeitada. O teste de formato usa uma lista vazia de chaves: **não comprova recuperação de mensagens reais**.
 
