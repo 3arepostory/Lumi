@@ -41,7 +41,7 @@ Credenciais nessa alternativa são entregues somente a participantes autenticado
 - Chamadas recebidas exigem o aplicativo e a conversa abertos. Não há push nem recebimento em segundo plano com o navegador fechado. Sistemas móveis podem suspender abas.
 - O microfone é solicitado ao iniciar ou aceitar; recusar/cancelar/encerrar libera a captura. A pessoa pode revogar a permissão no navegador. O áudio usa DTLS-SRTP do WebRTC; não é gravado nem enviado ao Blob.
 - A conexão direta revela endereços IP entre participantes; STUN/TURN observam metadados de rede. A sinalização armazenada no Vercel é cifrada com chave derivada do exporter MLS.
-- O piloto mantém duas pessoas por sala, convite único de 24 horas, sala de 7 dias e até 500 envelopes. Criação: 3 salas por endereço de rede/dia e 10 no total/dia. O contador usa o dia UTC; apenas a saudação segue Brasília.
+- O piloto mantém duas pessoas por sala, convite único de 24 horas, sala de 7 dias e até 500 envelopes. Criação: 20 salas por endereço de rede/dia e 100 no total/dia. O contador usa o dia UTC; apenas a saudação segue Brasília.
 - A consulta inicial ocorre a cada 2s por até dois minutos; após isso usa 10s para uma conexão pendente. Com WebRTC conectado, o apoio do histórico usa 30s. O conteúdo entre conectados chega pelo canal direto, sem esperar essa consulta. Há botão para atualizar/reconectar.
 - Blob e Functions têm cotas. O armazenamento atual serve ao piloto de baixo volume. Expansão para muitos usuários exige banco e distribuição de eventos apropriados. Não houve upgrade automático.
 - Ainda não há conta recuperável, backup, múltiplos dispositivos ou auditoria formal. As duas identidades deste modo pertencem aos navegadores; não são contas de um servidor Matrix.

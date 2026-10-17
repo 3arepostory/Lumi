@@ -14,7 +14,7 @@ Os segredos do convite ficam no fragmento `#convite=...`, não no caminho/query 
 
 A sinalização WebRTC é cifrada com AES-GCM usando uma chave de propósito específico derivada pelo exporter MLS. Fingerprints DTLS trafegam apenas nessa sinalização autenticada; digitação e confirmações atravessam o canal DTLS. O operador vê metadados, mas não SDP em claro. A conexão direta revela IPs entre os participantes. O TURN é necessário em redes restritivas e é um serviço separado das funções Vercel.
 
-O armazenamento foi habilitado na cota do plano existente; nenhum upgrade foi contratado. No Hobby, os limites incluídos interrompem o uso quando excedidos. A conversa por link é um piloto de baixo volume: leitura de objetos Blob e atualização por polling não substituem um banco/barramento para grande escala. Limite de criação inicial: três salas por endereço de rede e dez no total por dia. Contadores e salas expiradas ainda precisam de limpeza operacional; expiração bloqueia acesso, sem promessa de apagamento físico imediato.
+O armazenamento foi habilitado na cota do plano existente; nenhum upgrade foi contratado. No Hobby, os limites incluídos interrompem o uso quando excedidos. A conversa por link é um piloto de baixo volume: leitura de objetos Blob e atualização por polling não substituem um banco/barramento para grande escala. Limite de criação: vinte salas por endereço de rede e cem no total por dia. Contadores e salas expiradas ainda precisam de limpeza operacional; expiração bloqueia acesso, sem promessa de apagamento físico imediato.
 
 Para compartilhar, utilize a **URL estável de produção**. Previews continuam protegidos pela autenticação do Vercel; a produção usa o próprio controle de convite da aplicação.
 
