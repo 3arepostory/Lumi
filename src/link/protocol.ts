@@ -6,7 +6,7 @@ export type Attachment={id:string;key:string;iv:string;mime:string;size:number};
 export type WireMessage={id:string;from:string;body:string;time:number;image?:Attachment};
 export type LocalMessage=WireMessage&{mine:boolean;status:'pending'|'sent'|'received'|'delivered'|'read'|'failed';error?:string;upload?:number;localImage?:string;encryptedImage?:string};
 export type PendingEnvelope={id:string;kind:'welcome'|'message'|'commit';payload:string};
-export type LinkSnapshot={id:string;token:string;self:LinkMember;owner:LinkMember;guest?:LinkMember;ownerRole:boolean;invite?:string;privatePackage:{initPrivateKey:string;hpkePrivateKey:string;signaturePrivateKey:string};state?:string;messages:LocalMessage[];cursor:number;confirmed:boolean;pending?:PendingEnvelope;expires:number;draft:string;outbox?:string[];readIds?:string[]};
+export type LinkSnapshot={id:string;token:string;self:LinkMember;owner:LinkMember;guest?:LinkMember;ownerRole:boolean;invite?:string;privatePackage:{initPrivateKey:string;hpkePrivateKey:string;signaturePrivateKey:string};state?:string;messages:LocalMessage[];cursor:number;confirmed:boolean;pending?:PendingEnvelope;expires:number;draft:string;outbox?:string[];readIds?:string[];creationPending?:boolean};
 export const UUID=/^[a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89ab][a-f0-9]{3}-[a-f0-9]{12}$/i;
 export const TOKEN=/^[a-zA-Z0-9_-]{43}$/;
 export const BASE64=/^[a-zA-Z0-9+/]+={0,2}$/;
