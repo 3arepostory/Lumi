@@ -1,0 +1,7 @@
+import {describe,it,expect} from 'vitest';
+import {validHomeserver,visibleRooms,emptyPrivate,uniqueMessages,type Conversation,type Message} from './domain';
+describe('isolation and transport guards',()=>{
+ it('rejects insecure remote origins, embedded credentials and URL paths',()=>{for(const url of ['http://matrix.example.org','https://user:pass@example.org','https://example.org/path','https://example.org/?token=secret','javascript:alert(1)'])expect(()=>validHomeserver(url)).toThrow();expect(validHomeserver('http://localhost:8008')).toBe('http://localhost:8008');expect(validHomeserver('https://matrix.example.org')).toBe('https://matrix.example.org');});
+ it('private organization does not mutate shared conversation records',()=>{const rooms:Conversation[]=[{id:'a',name:'Família',preview:'',time:1,unread:0,members:2,encrypted:true},{id:'b',name:'Trabalho',preview:'',time:2,unread:0,members:2,encrypted:true}];const before=structuredClone(rooms);const preferences={...emptyPrivate,rooms:{a:{space:'Pessoal',favorite:true}}};expect(visibleRooms(rooms,preferences,'Pessoal','')[0].id).toBe('a');expect(visibleRooms(rooms,emptyPrivate,'Pessoal','')).toEqual([]);expect(rooms).toEqual(before);});
+ it('deduplicates replayed events while retaining latest state',()=>{const m:Message={id:'event1',sender:'a',name:'A',body:'first',time:1,mine:false};expect(uniqueMessages([m,{...m,body:'latest'}])).toEqual([{...m,body:'latest'}]);});
+});
