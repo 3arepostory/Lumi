@@ -10,13 +10,19 @@ Chaves e estado MLS são criados e cifrados localmente. A implementação usa pa
 
 Operador de servidor pode negar entrega, observar metadados e controlar o código servido. Não pode obter o conteúdo a partir apenas dos envelopes sem comprometer as chaves, a implementação ou os dispositivos. Ratchets e mensagens locais são persistidos juntos antes/depois de operações; o ciphertext pendente é reutilizado em reenvios. A sequência e IDs são verificados, o protocolo rejeita replay/adulteração, e writes condicionais por ETag resolvem concorrência no servidor. Ainda são necessários testes extensos de falhas durante escritas locais e mudança de versões.
 
-São somente dois participantes, sem troca de dispositivos, remoção seletiva de membro, atualização periódica de época, anexos, backups ou restauração neste modo. Assim, não se anuncia recuperação após comprometimento durante uma conversa longa: MLS oferece mecanismos para isso, mas a integração atual só cria a época de entrada e usa os ratchets de aplicação. Não confundir a escolha do protocolo com garantias ainda não integradas.
+São somente dois participantes, sem troca de dispositivos, remoção seletiva de membro, atualização periódica de época, backups ou restauração neste modo. Assim, não se anuncia recuperação após comprometimento durante uma conversa longa: MLS oferece mecanismos para isso, mas a integração atual só cria a época de entrada e usa os ratchets de aplicação. Não confundir a escolha do protocolo com garantias ainda não integradas.
 
 O acesso expira em sete dias; o convite em 24h. Encerrar limpa os envelopes do registro ativo e bloqueia acessos. Retenção operacional do provedor e cópias locais permanecem fora dessa garantia. A rota exige origem correta, JSON, bearer token, associação à sala e limites de tamanho. Criação de salas tem limite compartilhado persistente. Logs registram apenas um identificador genérico de erro. O service worker nunca guarda `/api/link` ou blobs de conversas.
 
+Imagens usam AES-256-GCM com chave aleatória e IV por arquivo, com o identificador como dados autenticados. O Blob guarda só bytes cifrados; chave, tipo, tamanho e identificador seguem na mensagem MLS. O endpoint autentica ambos os participantes, revalida expiração/revogação e limita tamanho, número e volume total. Reservas fixam o digest do ciphertext por ID, impedindo substituição por outro conteúdo em uma nova tentativa. Arquivos permanecem no armazenamento após o bloqueio de acesso, sujeitos à limpeza operacional.
+
+A sinalização WebRTC usa AES-GCM com chave de propósito separado derivada pelo exporter MLS e AAD que fixa sala e remetente. Isso protege os fingerprints DTLS do caminho de sinalização. O canal de dados ordenado usa DTLS; voz usa DTLS-SRTP e não é gravada. Época MLS não muda durante essas sessões. Sinais antigos podem ser reapresentados por um operador para causar negação de serviço; o estado da sessão trata reentrada e reinício, sem garantia de disponibilidade contra um operador malicioso. Não há garantia de ocultar endereços IP: a conexão direta pode revelá-los à outra pessoa, e STUN/TURN processam metadados. Credenciais TURN coturn são geradas no backend com validade de uma hora; a alternativa JSON deve usar credenciais limitadas/rotacionadas.
+
+Entregue e lido são confirmações do cliente autenticado da outra pessoa, não prova de atenção humana. Lido exige mensagem ao menos 50% visível e documento visível. Digitação é transitória e expira; não é armazenada no histórico. O microfone só é capturado ao iniciar ou aceitar chamada. Captura e track de envio são liberadas ao recusar, cancelar, encerrar, sair ou perder a conexão. O elemento de áudio permanece silenciado fora da chamada ativa.
+
 Veja o README e o relatório específico `LINK-VALIDATION.md` para o estado desta modalidade.
 
-## Limite desta entrega
+## Limite do cliente Matrix anterior
 
 Piloto não auditado. O fluxo com duas contas reais, revogação/rotação e recuperação completa de histórico ainda não foi validado. A implementação do protocolo não foi reescrita. Não usar como prova de segurança para comunicação sensível.
 

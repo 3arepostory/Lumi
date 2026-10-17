@@ -20,9 +20,11 @@ Para compartilhar, utilize a **URL estável de produção**. Previews continuam 
 
 O cliente Matrix anterior continua em `/?modo=matrix`. A documentação abaixo e a infraestrutura Synapse referem-se a essa opção anterior, que permanece separada.
 
+## Cliente Matrix anterior
+
 Um lugar tranquilo para conversar. Cliente web React/TypeScript em português brasileiro, preparado para hospedagem estática no Vercel e conectado a um servidor Matrix próprio.
 
-**Estado: piloto funcional de cliente, com backend próprio ainda não provisionado e fluxo real entre duas contas ainda não validado. Não é uma entrega de todas as seis fases, nem produto auditado.** A prévia começa em modo identificado com pessoas fictícias e mensagens locais. Para mensagens reais é necessário conectar contas de um servidor Matrix.
+**Estado do cliente Matrix anterior: piloto funcional de cliente, com backend próprio ainda não provisionado e fluxo real entre duas contas ainda não validado. Não é uma entrega de todas as seis fases, nem produto auditado.** A prévia começa em modo identificado com pessoas fictícias e mensagens locais. Para mensagens reais é necessário conectar contas de um servidor Matrix.
 
 ## Executar
 
