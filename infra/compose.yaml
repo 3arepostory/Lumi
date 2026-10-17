@@ -1,0 +1,42 @@
+services:
+  db:
+    image: postgres:17-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: synapse
+      POSTGRES_DB: synapse
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Run setup.mjs first}
+      POSTGRES_INITDB_ARGS: --encoding=UTF8 --lc-collate=C --lc-ctype=C
+    volumes:
+      - postgres:/var/lib/postgresql/data
+    healthcheck:
+      test: [CMD-SHELL, pg_isready -U synapse]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+    logging:
+      options: {max-size: 5m, max-file: '2'}
+  synapse:
+    image: ghcr.io/element-hq/synapse:v1.163.0
+    restart: unless-stopped
+    environment:
+      SYNAPSE_CONFIG_PATH: /data/homeserver.yaml
+    volumes:
+      - ./data:/data
+    depends_on:
+      db: {condition: service_healthy}
+    logging:
+      options: {max-size: 5m, max-file: '2'}
+  proxy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    ports: ['80:80', '443:443']
+    volumes:
+      - ./data/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy:/data
+    depends_on: [synapse]
+    logging:
+      options: {max-size: 5m, max-file: '2'}
+volumes:
+  postgres:
+  caddy:

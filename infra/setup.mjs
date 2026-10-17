@@ -1,0 +1,17 @@
+import {mkdirSync,writeFileSync,existsSync} from 'node:fs';
+import {randomBytes} from 'node:crypto';
+import {fileURLToPath} from 'node:url';
+import {dirname,join} from 'node:path';
+const dir=dirname(fileURLToPath(import.meta.url));
+const host=process.argv[2];
+if(!host||!/^(?=.{1,253}$)([a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z]{2,}$/.test(host))throw Error('Uso: node infra/setup.mjs matrix.seudominio.com');
+if(existsSync(join(dir,'data/homeserver.yaml'))||existsSync(join(dir,'.env')))throw Error('Configuração já existe. Nada foi alterado.');
+mkdirSync(join(dir,'data'),{recursive:true});
+const secret=()=>randomBytes(48).toString('base64url');
+const dbPassword=secret();
+writeFileSync(join(dir,'.env'),`POSTGRES_PASSWORD=${dbPassword}\n`,{mode:0o600,flag:'wx'});
+const config={server_name:host,public_baseurl:`https://${host}/`,pid_file:'/data/homeserver.pid',listeners:[{port:8008,tls:false,type:'http',x_forwarded:true,resources:[{names:['client'],compress:false}]}],database:{name:'psycopg2',args:{user:'synapse',password:dbPassword,database:'synapse',host:'db',cp_min:5,cp_max:10}},log_config:'/data/log.config',media_store_path:'/data/media_store',signing_key_path:'/data/signing.key',registration_shared_secret:secret(),macaroon_secret_key:secret(),form_secret:secret(),report_stats:false,enable_registration:false,enable_metrics:false,enable_media_repo:true,max_upload_size:'20M',url_preview_enabled:false,presence:{enabled:false},federation_domain_whitelist:[],rc_message:{per_second:0.5,burst_count:15},rc_registration:{per_second:0.05,burst_count:3},rc_login:{address:{per_second:0.02,burst_count:5},account:{per_second:0.02,burst_count:5},failed_attempts:{per_second:0.01,burst_count:5}},rc_invites:{per_room:{per_second:0.01,burst_count:5},per_user:{per_second:0.01,burst_count:5}},redaction_retention_period:'7d',forgotten_room_retention_period:'30d',retention:{enabled:true,default_policy:{max_lifetime:'180d'},purge_jobs:[{interval:'1d'}]}};
+writeFileSync(join(dir,'data/homeserver.yaml'),JSON.stringify(config,null,2),{mode:0o600,flag:'wx'});
+writeFileSync(join(dir,'data/log.config'),JSON.stringify({version:1,formatters:{minimal:{format:'%(levelname)s %(name)s: operational error'}},handlers:{console:{class:'logging.StreamHandler',formatter:'minimal'}},root:{level:'ERROR',handlers:['console']},disable_existing_loggers:false}),{mode:0o600});
+writeFileSync(join(dir,'data/Caddyfile'),`${host} {\n  header Referrer-Policy no-referrer\n  header X-Content-Type-Options nosniff\n  @admin path /_synapse/admin/*\n  respond @admin 404\n  reverse_proxy synapse:8008\n}\n`,{mode:0o644});
+console.log('Configuração criada sem imprimir segredos. Consulte infra/README.md antes de iniciar.');
