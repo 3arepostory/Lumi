@@ -11,6 +11,9 @@ importers:
       '@matrix-org/matrix-sdk-crypto-wasm':
         specifier: 18.9.0
         version: 18.9.0
+      events:
+        specifier: 3.3.0
+        version: 3.3.0
       matrix-encrypt-attachment:
         specifier: 1.0.3
         version: 1.0.3
